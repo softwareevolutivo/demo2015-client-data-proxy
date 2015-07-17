@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://softwareevolutivo.com.ec/client/data" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="DataService" targetNamespace="http://softwareevolutivo.com.ec/client/data">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://softwareevolutivo.com.ec/client/data" elementFormDefault="unqualified" targetNamespace="http://softwareevolutivo.com.ec/client/data" version="1.0">
+
+  <xs:element name="basicInfo" type="tns:basicInfo"/>
+
+  <xs:element name="basicInfoResponse" type="tns:basicInfoResponse"/>
+
+  <xs:complexType name="basicInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="basicInfoResponse">
+    <xs:sequence>
+      <xs:element name="_return">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="entry">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element minOccurs="0" name="key" type="xs:string"/>
+                  <xs:element minOccurs="0" name="value" type="xs:anyType"/>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="basicInfoResponse">
+    <wsdl:part element="tns:basicInfoResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="basicInfo">
+    <wsdl:part element="tns:basicInfo" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="DataService">
+    <wsdl:operation name="basicInfo">
+      <wsdl:input message="tns:basicInfo" name="basicInfo">
+    </wsdl:input>
+      <wsdl:output message="tns:basicInfoResponse" name="basicInfoResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="DataServiceSoapBinding" type="tns:DataService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="basicInfo">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="basicInfo">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="basicInfoResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="DataService">
+    <wsdl:port binding="tns:DataServiceSoapBinding" name="Data">
+      <soap:address location="http://localhost:18080/client.info/DataService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

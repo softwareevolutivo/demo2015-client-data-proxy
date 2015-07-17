@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sy:switchyard xmlns:camel="urn:switchyard-component-camel:config:1.1" xmlns:sca="http://docs.oasis-open.org/ns/opencsa/sca/200912" xmlns:soap="urn:switchyard-component-soap:config:1.1" xmlns:sy="urn:switchyard-config:switchyard:1.1" name="client.info.proxy" targetNamespace="urn:com.example.switchyard:client.info.proxy:1.0">
+  <sca:composite name="client.info.proxy" targetNamespace="urn:com.example.switchyard:client.info.proxy:1.0">
+    <sca:component name="Route">
+      <camel:implementation.camel>
+        <camel:xml path="route.xml"/>
+      </camel:implementation.camel>
+      <sca:service name="PromoteDataService">
+        <sca:interface.wsdl interface="DataService.wsdl#wsdl.porttype(DataService)"/>
+      </sca:service>
+      <sca:reference name="ProxyDataService">
+        <sca:interface.wsdl interface="DataService.wsdl#wsdl.porttype(DataService)"/>
+      </sca:reference>
+    </sca:component>
+    <sca:service name="PromoteDataService" promote="Route/PromoteDataService">
+      <sca:interface.wsdl interface="DataService.wsdl#wsdl.porttype(DataService)"/>
+      <soap:binding.soap name="soap1">
+        <soap:wsdl>DataService.wsdl</soap:wsdl>
+        <soap:socketAddr>:${soapPort}</soap:socketAddr>
+        <soap:contextPath>proxy</soap:contextPath>
+      </soap:binding.soap>
+    </sca:service>
+    <sca:reference name="ProxyDataService" multiplicity="0..1" promote="Route/ProxyDataService">
+      <sca:interface.wsdl interface="DataService.wsdl#wsdl.porttype(DataService)"/>
+      <soap:binding.soap name="soap1">
+        <soap:wsdl>DataService.wsdl</soap:wsdl>
+        <soap:endpointAddress>http://localhost:${soapClientPort}/client.info/DataService</soap:endpointAddress>
+      </soap:binding.soap>
+    </sca:reference>
+    <sca:property value="8080" name="soapPort"/>
+    <sca:property value="18080" name="soapClientPort"/>
+  </sca:composite>
+</sy:switchyard>
